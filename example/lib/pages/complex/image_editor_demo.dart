@@ -106,7 +106,7 @@ class _ImageEditorDemoState extends State<ImageEditorDemo> {
                   mode: ExtendedImageMode.editor,
                   enableLoadState: true,
                   extendedImageEditorKey: editorKey,
-                  onlyRotate: true,
+                  onlyRotate: false,
                   initEditorConfigHandler: (ExtendedImageState? state) {
                     return EditorConfig(
                       maxScale: 8.0,
