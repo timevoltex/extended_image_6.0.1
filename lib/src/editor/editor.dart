@@ -111,7 +111,7 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
         child: Stack(
           children: <Widget>[
             Positioned.fill(child: image),
-            if (widget.onlyRotate)
+            if (!widget.onlyRotate)
               Positioned.fill(
                 child: LayoutBuilder(builder:
                     (BuildContext context, BoxConstraints constraints) {
