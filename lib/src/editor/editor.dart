@@ -106,65 +106,65 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
 
     Widget result = GestureDetector(
         onScaleStart: _handleScaleStart,
-        // onScaleUpdate: _handleScaleUpdate,
+        onScaleUpdate: _handleScaleUpdate,
         behavior: _editorConfig!.hitTestBehavior,
         child: Stack(
           children: <Widget>[
             Positioned.fill(child: image),
-            if (!widget.onlyRotate)
-              Positioned.fill(
-                child: LayoutBuilder(builder:
-                    (BuildContext context, BoxConstraints constraints) {
-                  Rect layoutRect = Offset.zero &
-                      Size(constraints.maxWidth, constraints.maxHeight);
-                  final EdgeInsets padding = _editorConfig!.cropRectPadding;
+            Positioned.fill(
+              child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                Rect layoutRect = Offset.zero &
+                    Size(constraints.maxWidth, constraints.maxHeight);
+                final EdgeInsets padding = _editorConfig!.cropRectPadding;
 
-                  layoutRect = padding.deflateRect(layoutRect);
+                layoutRect = padding.deflateRect(layoutRect);
 
-                  if (_editActionDetails!.cropRect == null) {
-                    final Rect destinationRect = getDestinationRect(
-                        rect: layoutRect,
-                        inputSize: Size(
-                            widget.extendedImageState.extendedImageInfo!.image
-                                .width
-                                .toDouble(),
-                            widget.extendedImageState.extendedImageInfo!.image
-                                .height
-                                .toDouble()),
-                        flipHorizontally: false,
-                        fit: widget.extendedImageState.imageWidget.fit,
-                        centerSlice:
-                            widget.extendedImageState.imageWidget.centerSlice,
-                        alignment:
-                            widget.extendedImageState.imageWidget.alignment,
-                        scale:
-                            widget.extendedImageState.extendedImageInfo!.scale);
+                if (_editActionDetails!.cropRect == null) {
+                  final Rect destinationRect = getDestinationRect(
+                      rect: layoutRect,
+                      inputSize: Size(
+                          widget
+                              .extendedImageState.extendedImageInfo!.image.width
+                              .toDouble(),
+                          widget.extendedImageState.extendedImageInfo!.image
+                              .height
+                              .toDouble()),
+                      flipHorizontally: false,
+                      fit: widget.extendedImageState.imageWidget.fit,
+                      centerSlice:
+                          widget.extendedImageState.imageWidget.centerSlice,
+                      alignment:
+                          widget.extendedImageState.imageWidget.alignment,
+                      scale:
+                          widget.extendedImageState.extendedImageInfo!.scale);
 
-                    Rect cropRect = _initCropRect(destinationRect);
-                    if (_editorConfig!.initCropRectType ==
-                            InitCropRectType.layoutRect &&
-                        _editorConfig!.cropAspectRatio != null &&
-                        _editorConfig!.cropAspectRatio! > 0) {
-                      final Rect rect = _initCropRect(layoutRect);
-                      _editActionDetails!.totalScale = _editActionDetails!
-                          .preTotalScale = destinationRect.width
-                              .greaterThan(destinationRect.height)
-                          ? rect.height / cropRect.height
-                          : rect.width / cropRect.width;
-                      cropRect = rect;
-                    }
-                    _editActionDetails!.cropRect = cropRect;
+                  Rect cropRect = _initCropRect(destinationRect);
+                  if (_editorConfig!.initCropRectType ==
+                          InitCropRectType.layoutRect &&
+                      _editorConfig!.cropAspectRatio != null &&
+                      _editorConfig!.cropAspectRatio! > 0) {
+                    final Rect rect = _initCropRect(layoutRect);
+                    _editActionDetails!.totalScale = _editActionDetails!
+                        .preTotalScale = destinationRect.width
+                            .greaterThan(destinationRect.height)
+                        ? rect.height / cropRect.height
+                        : rect.width / cropRect.width;
+                    cropRect = rect;
                   }
+                  _editActionDetails!.cropRect = cropRect;
+                }
 
-                  return ExtendedImageCropLayer(
-                    _editActionDetails!,
-                    _editorConfig!,
-                    layoutRect,
-                    key: _layerKey,
-                    fit: BoxFit.contain,
-                  );
-                }),
-              ),
+                return ExtendedImageCropLayer(
+                  _editActionDetails!,
+                  _editorConfig!,
+                  layoutRect,
+                  key: _layerKey,
+                  onlyRotate: widget.onlyRotate,
+                  fit: BoxFit.contain,
+                );
+              }),
+            ),
           ],
         ));
     result = Listener(
@@ -323,6 +323,7 @@ class ExtendedImageEditorState extends State<ExtendedImageEditor> {
   EditActionDetails? get editAction => _editActionDetails;
 
   void rotate({bool right = true}) {
+    print(_layerKey.currentState);
     if (_layerKey.currentState == null) {
       return;
     }

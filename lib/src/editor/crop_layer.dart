@@ -26,6 +26,7 @@ class ExtendedImageCropLayer extends StatefulWidget {
     this.editorConfig,
     this.layoutRect, {
     Key? key,
+    this.onlyRotate = false,
     this.fit = BoxFit.contain,
   }) : super(key: key);
 
@@ -33,6 +34,7 @@ class ExtendedImageCropLayer extends StatefulWidget {
   final EditorConfig editorConfig;
   final Rect layoutRect;
   final BoxFit fit;
+  final bool onlyRotate;
   @override
   ExtendedImageCropLayerState createState() => ExtendedImageCropLayerState();
 }
@@ -87,7 +89,7 @@ class ExtendedImageCropLayerState extends State<ExtendedImageCropLayer>
 
   @override
   Widget build(BuildContext context) {
-    if (cropRect == null) {
+    if (cropRect == null || widget.onlyRotate) {
       return Container();
     }
     final EditorConfig editConfig = widget.editorConfig;

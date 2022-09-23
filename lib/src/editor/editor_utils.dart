@@ -246,6 +246,8 @@ class EditActionDetails {
 
       /// move
       else {
+        if (screenCropRect == null) return _screenDestinationRect!;
+
         if (_screenDestinationRect != screenCropRect) {
           final bool topSame =
               _screenDestinationRect!.topIsSame(screenCropRect!);
@@ -307,6 +309,7 @@ class EditActionDetails {
       }
     } else {
       _screenDestinationRect = getRectWithScale(_rawDestinationRect!);
+      if (screenCropRect == null) return _screenDestinationRect!;
       _screenDestinationRect =
           computeBoundary(_screenDestinationRect!, screenCropRect!);
     }
